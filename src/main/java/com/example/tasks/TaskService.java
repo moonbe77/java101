@@ -2,21 +2,26 @@ package src.main.java.com.example.tasks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TaskService {
 
-    private final List<Task> tasks = new ArrayList<>();
+    private final TaskRepository repository;
+
+    public TaskService(TaskRepository repository) {
+        this.repository = repository;
+    }
 
     public void addTask(Task task) {
-        tasks.add(task);
+    repository.save(task);
     }
 
     public List<Task> getTasks() {
-        return tasks;
+        return repository.findAll();
     }
 
     public int getTaskCount() {
-        return tasks.size();
+        return repository.findAll().size();
     }
 
     public int getCompletedTaskCount() {
@@ -25,7 +30,7 @@ public class TaskService {
         // task.isCompleted()).toList();
         final List<Task> completed = new ArrayList<>();
 
-        for (Task task : tasks) {
+        for (Task task : repository.findAll()) {
             if (task.isCompleted()) {
                 completed.add(task);
             }
@@ -43,7 +48,7 @@ public class TaskService {
 
         final List<Task> completed = new ArrayList<>();
 
-        for (Task task : tasks) {
+        for (Task task : repository.findAll()) {
             if (task.isCompleted()) {
                 completed.add(task);
             }
@@ -53,5 +58,12 @@ public class TaskService {
         return completed;
 
     }
+    
+    public Optional<Task> getTaskById(Long id){
+
+        return repository.findById(id);
+
+    }
+
 
 }
